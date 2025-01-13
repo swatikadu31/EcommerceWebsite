@@ -2,43 +2,60 @@ package com.code2java.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name="product")
-@Data
+@Table(name = "product")
+//@Data
+@Getter
+@Setter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
-   @ManyToOne
-   @JoinColumn(name="category_id", nullable=false)
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory category;
 
-    @Column(name="sku")
+    @Column(name = "sku")
     private String sku;
-    @Column(name="name")
+
+    @Column(name = "name")
     private String name;
-    @Column(name="description")
+
+    @Column(name = "description")
     private String description;
-    @Column(name="unitPrice")
+
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
-    @Column(name="imageUrl")
+
+    @Column(name = "image_url")
     private String imageUrl;
-    @Column(name="active")
+
+    @Column(name = "active")
     private boolean active;
-    @Column(name="unitsInStock")
+
+    @Column(name = "units_in_stock")
     private int unitsInStock;
+
+    @Column(name = "date_created")
     @CreationTimestamp
-    @Column(name="dateCreated")
     private Date dateCreated;
-   
-    @Column(name="lastUpdated")
+
+    @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
 }
