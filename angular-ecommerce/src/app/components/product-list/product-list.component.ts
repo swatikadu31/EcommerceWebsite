@@ -8,7 +8,8 @@ import { error } from 'console';
   standalone: false,
   
   //templateUrl: './product-list.component.html',
-  templateUrl: './product-list-table.component.html',
+  //templateUrl: './product-list-table.component.html',
+  templateUrl: './product-list-grid.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit{
