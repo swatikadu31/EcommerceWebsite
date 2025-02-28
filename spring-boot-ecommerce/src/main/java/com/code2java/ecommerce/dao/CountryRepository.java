@@ -8,7 +8,7 @@ import com.code2java.ecommerce.entity.Country;
 
 import jakarta.persistence.Column;
 
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
 @RepositoryRestResource(collectionResourceRel = "countries", path = "countries")
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 }

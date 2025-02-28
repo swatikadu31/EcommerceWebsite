@@ -1,6 +1,5 @@
 package com.code2java.ecommerce.constructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +10,7 @@ import com.code2java.ecommerce.dto.Purchase;
 import com.code2java.ecommerce.dto.PurchaseResponse;
 import com.code2java.ecommerce.service.CheckoutService;
 
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/checkout")
 public class CheckoutConstructor {
