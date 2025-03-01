@@ -29,6 +29,9 @@ export class CheckoutComponent implements OnInit {
   countries: Country[] = [];
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
+  
+  storage :Storage = sessionStorage;
+
 
   constructor(private formBuilder: FormBuilder,
     private meet2ShopFormService: Meet2ShopFormService,
@@ -42,6 +45,10 @@ export class CheckoutComponent implements OnInit {
 
     this.reviewCartDetails();
 
+    //read the users email address from browser storage
+
+    const theEmail= JSON.parse(this.storage.getItem('userEmail')|| '""');
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('',
@@ -52,7 +59,7 @@ export class CheckoutComponent implements OnInit {
           [Validators.required,
           Validators.minLength(2),
           Meet2shopValidators.notOnlyWhitespace]),
-          email: new FormControl('',
+          email: new FormControl(theEmail,
             [Validators.required,
             Validators.pattern('^[a-z0-9.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$'),
             Meet2shopValidators.notOnlyWhitespace])

@@ -9,5 +9,7 @@
     <button *ngIf="isAuthenticated" (click)="logout()" class="security-btn" title="Logout from your account" aria-label="Logout from your account">Logout</button>
 
     <button *ngIf="isAuthenticated" routerLink="/members" class="security-btn ml-1">Members</button>
+    
+    <button *ngIf="isAuthenticated" routerLink="/order-history" class="security-btn ml-1">Orders</button>
 
 </div>
