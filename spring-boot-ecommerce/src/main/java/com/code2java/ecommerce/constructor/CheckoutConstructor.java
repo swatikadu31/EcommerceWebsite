@@ -10,7 +10,7 @@ import com.code2java.ecommerce.dto.Purchase;
 import com.code2java.ecommerce.dto.PurchaseResponse;
 import com.code2java.ecommerce.service.CheckoutService;
 
-//@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/checkout")
 public class CheckoutConstructor {

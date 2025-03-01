@@ -2,6 +2,7 @@ package com.code2java.ecommerce.entity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,11 +49,11 @@ public class Order {
 	
 	@Column(name="date_create")
 	@CreationTimestamp
-	private Date dateCreate;
+	private LocalDateTime dateCreate;
 	
 	@Column(name="last_updated")
 	@UpdateTimestamp
-	private Date lastUpdated;
+	private LocalDateTime lastUpdated;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "order")
 	private Set<OrderItem> orderItems = new HashSet<>();

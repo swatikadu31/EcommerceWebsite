@@ -1,6 +1,7 @@
 package com.code2java.ecommerce.config;
 
 import com.code2java.ecommerce.entity.Country;
+import com.code2java.ecommerce.entity.Order;
 import com.code2java.ecommerce.entity.Product;
 import com.code2java.ecommerce.entity.ProductCategory;
 import com.code2java.ecommerce.entity.State;
@@ -49,6 +50,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         disableHttpMethods(ProductCategory.class,config, unsupportedActions);
         disableHttpMethods(Country.class,config, unsupportedActions);
         disableHttpMethods(State.class,config, unsupportedActions);
+        disableHttpMethods(Order.class,config, unsupportedActions);
 
         // Configure CORS mapping
         cors.addMapping(config.getBasePath()+"/**")
