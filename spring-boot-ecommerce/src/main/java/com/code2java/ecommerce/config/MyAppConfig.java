@@ -7,18 +7,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MyAppConfig implements WebMvcConfigurer {
-	
-	@Value("${allowed.origins}")
-	private String[] theAllowedOrigins;
-	
-	
-	@Value("${server.servlet.context-path}")
-	private String basePath;
-	
-	public void addCorsMappings(CorsRegistry cors) {
-		
-		cors.addMapping(basePath + "/**").allowedOrigins(theAllowedOrigins);
-	}
+	 @Value("${allowed.origins}")
+	    private String[] theAllowedOrigins;
+
+	    @Value("${server.servlet.context-path}")
+	    private String basePath;
+
+	    @Override
+	    public void addCorsMappings(CorsRegistry cors) {
+	        cors.addMapping(basePath + "/**")
+	            .allowedOriginPatterns(theAllowedOrigins) // Use this for Spring Boot 3.x+
+	            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+	            .allowedHeaders("*");
+	    }
 	
 
 }

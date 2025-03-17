@@ -54,7 +54,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         // Configure CORS mapping
         cors.addMapping(config.getBasePath()+"/**")
-            .allowedOrigins("http://localhost:4200"); // Adjust as per frontend
+            .allowedOrigins("https://localhost:4200"); // Adjust as per frontend
         
         exposeIds(config);
     }

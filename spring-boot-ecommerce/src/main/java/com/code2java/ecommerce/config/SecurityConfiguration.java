@@ -20,10 +20,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	 http
-         .authorizeHttpRequests(auth -> auth
-                 .requestMatchers("/api/orders/**").authenticated() // Secure orders
-                 .anyRequest().permitAll()
-         )
+    	 .authorizeHttpRequests(auth -> auth
+    			    .requestMatchers("/api/order/**").authenticated()
+    			    .anyRequest().permitAll()
+    			)
          .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // Enforce JWT authentication
          .cors(Customizer.withDefaults()) // Enable CORS
          .csrf(AbstractHttpConfigurer::disable); // Disable CSRF (for APIs)
@@ -33,6 +33,8 @@ public class SecurityConfiguration {
 
      // Return a 401 Unauthorized response if authentication fails
      Okta.configureResourceServer401ResponseBody(http);
+
+    
 
      return http.build();
 
