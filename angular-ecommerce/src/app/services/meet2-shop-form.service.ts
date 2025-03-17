@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import {  map, Observable, of } from 'rxjs';
 import { Country } from '../common/country';
 import { State } from '../common/state';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Meet2ShopFormService {
-private countryiesUrl='http://localhost:8080/api/countries';
-private statesUrl='http://localhost:8080/api/states';
+private countryiesUrl=environment.meet2shopApiUrl+'/countries';
+private statesUrl=environment.meet2shopApiUrl+'/states';
   constructor(private httpClient:HttpClient) {
     
   }
