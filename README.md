@@ -7,41 +7,57 @@ The E-Commerce Website is a full-stack web application developed using Angular f
 The main objective of this project is to develop a user-friendly, efficient, and secure e-commerce platform where customers can:
 
 Browse products by categories.
+
 Add products to the cart and proceed with online payments.
+
 Manage user accounts and order history.
+
 Admins can add, update, and delete products.
 
 3. Technologies Used
 
 Frontend (Client-Side)
 Angular – Framework for developing the user interface.
+
 TypeScript, HTML, CSS, Bootstrap – For responsive design and styling.
 
 Backend (Server-Side)
 Spring Boot – Backend framework for handling business logic.
+
 Spring Data JPA & Hibernate – For database interaction.
+
 MySQL – Database management system.
 
 Payment Gateway Integration
+
 Razorpay API – Secure online payment processing.
 
 Authentication & Security
+
 Spring Security & JWT – For user authentication and role-based access control.
+
 Okta Integration – For OAuth-based authentication.
 
 
 4.  Features
    
 User Module:
+
 User Registration & Login (JWT Authentication / Okta)
+
 Product Browsing & Filtering
+
 Add to Cart & Wishlist
+
 Secure Checkout & Payment (Razorpay)
+
 Order History & Invoice Generation
 
 Admin Module:
 Product Management (Add, Update, Delete)
+
 Order & Payment Management
+
 User Management & Access Control
 
 5. System Architecture
