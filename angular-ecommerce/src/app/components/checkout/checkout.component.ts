@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 import { Order } from '../../common/order';
 import { OrderItem } from '../../common/order-item';
 import { Purchase } from '../../common/purchase';
-
+import { PaymentInfo } from '../../common/payment-info';
+import { environment } from '../../../environments/environment';
+declare var Razorpay: any;
 @Component({
   selector: 'app-checkout',
   standalone: false,
@@ -24,13 +26,17 @@ export class CheckoutComponent implements OnInit {
   checkoutFormGroup!: FormGroup;
   totalPrice: number = 0;
   totalQuantity: number = 0;
-  creditCardYears: number[] = [];
-  creditCardMonths: number[] = [];
+ // creditCardYears: number[] = [];
+ // creditCardMonths: number[] = [];
   countries: Country[] = [];
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
   
   storage :Storage = sessionStorage;
+
+  paymentInfo: PaymentInfo = new PaymentInfo();
+  displayError: string = "";
+  isDisabled:boolean=false;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -90,19 +96,9 @@ export class CheckoutComponent implements OnInit {
         zipCode: new FormControl('', [Validators.required, Validators.minLength(6),
         Meet2shopValidators.notOnlyWhitespace])
 
-      }),
-      creditCard: this.formBuilder.group({
-        cardType: new FormControl('', [Validators.required]),
-        nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), Meet2shopValidators.notOnlyWhitespace]),
-        cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}'),
-        Meet2shopValidators.notOnlyWhitespace]),
-        securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}'),
-        Meet2shopValidators.notOnlyWhitespace]),
-        expirationMonth: [''],
-        expirationYear: ['']
       })
     });
-
+/*
     //populated credit card months
     const startMonth: number = new Date().getMonth() + 1;
     console.log("startMonth:" + startMonth);
@@ -121,6 +117,8 @@ export class CheckoutComponent implements OnInit {
         this.creditCardYears = data;
       }
     );
+
+    */
     this.meet2ShopFormService.getCountries().subscribe(
       data => {
         console.log("retrived countries: " + JSON.stringify(data));
@@ -238,30 +236,51 @@ export class CheckoutComponent implements OnInit {
     purchase.order = order;
     purchase.orderItems = orderItems;
 
-    // call REST API via the CheckoutService
-    console.log("Final Purchase Object:", JSON.stringify(purchase))
-    this.checkoutService.placeOrder(purchase).subscribe({
-      next: response => {
-        console.log("Order placed successfully:", response);
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100);
+    this.paymentInfo.currency = "INR";
+    
 
-        alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
-
-        // reset cart
-        this.resetCart();
-
-      },
-      error: err => {
-        console.error("Error placing order:", err);
-        alert(`There was an error: ${err.message}`);
-      }
+    if (this.displayError === "") {
+      this.isDisabled=true;
+      this.checkoutService.createPayment(this.paymentInfo).subscribe({
+        next: (paymentIntentResponse: any) => {
+          const options = {
+            key: environment.razorpayKey,
+            amount: this.paymentInfo.amount,
+            currency: this.paymentInfo.currency,
+            name: "Meet2Shop",
+            description: "Order Payment",
+            order_id: paymentIntentResponse.order_id,
+            handler: (response: { razorpay_payment_id: any }) => {
+              this.checkoutService.placeOrder(purchase).subscribe({
+                next: (orderResponse: any) => {
+                  alert("Order placed successfully!");
+                  this.resetCart();
+                  this.isDisabled=false;
+                },
+                error: (error: any) => {
+                  console.error(`Error placing order: ${error.message}`);
+                  alert("Order placement failed!");
+                  this.isDisabled=false;
+                }
+              });
+            },
+            prefill: {
+              name: `${this.checkoutFormGroup.get('customer.firstName')?.value} ${this.checkoutFormGroup.get('customer.lastName')?.value}`,
+              email: this.checkoutFormGroup.get('customer.email')?.value
+            },
+            theme: { color: "#3399cc" }
+          };
+          const razorpay = new Razorpay(options);
+          razorpay.open();
+        },
+        error: (error: any) => {
+          console.error("Payment creation failed!", error);
+          alert(`Payment failed! Reason: ${error.error ? error.error.description : 'Unknown error'}`);
+          this.isDisabled=false;
+        }
+      });
     }
-    );
-    console.log('Purchase Data:', JSON.stringify(purchase));
-    console.log(this.checkoutFormGroup.get('customer')?.value);
-    console.log("The Email Address is: " + this.checkoutFormGroup.get('customer')?.value.email);
-    console.log("The shipping Address country is: " + this.checkoutFormGroup.get('shippingAddress')?.value.country.name);
-    console.log("The shipping Address state is: " + this.checkoutFormGroup.get('shippingAddress')?.value.state.name);
-
   }
 
   resetCart() {
@@ -269,6 +288,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
+    this.cartService.persistCartItems();
 
     // reset the form
     this.checkoutFormGroup.reset();
@@ -276,6 +296,7 @@ export class CheckoutComponent implements OnInit {
     // navigate back to the products page
     this.router.navigateByUrl("/products");
   }
+  /*
   handleMonthsAndYears() {
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
 
@@ -300,7 +321,7 @@ export class CheckoutComponent implements OnInit {
       }
     );
   }
-
+*/
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.get(formGroupName);
 
