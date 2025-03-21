@@ -16,23 +16,25 @@ Admins can add, update, and delete products.
 
 3. Technologies Used
 
-Frontend (Client-Side)
+Frontend (Client-Side):
+
 Angular – Framework for developing the user interface.
 
 TypeScript, HTML, CSS, Bootstrap – For responsive design and styling.
 
-Backend (Server-Side)
+Backend (Server-Side):
+
 Spring Boot – Backend framework for handling business logic.
 
 Spring Data JPA & Hibernate – For database interaction.
 
 MySQL – Database management system.
 
-Payment Gateway Integration
+Payment Gateway Integration:
 
 Razorpay API – Secure online payment processing.
 
-Authentication & Security
+Authentication & Security:
 
 Spring Security & JWT – For user authentication and role-based access control.
 
@@ -54,6 +56,7 @@ Secure Checkout & Payment (Razorpay)
 Order History & Invoice Generation
 
 Admin Module:
+
 Product Management (Add, Update, Delete)
 
 Order & Payment Management
